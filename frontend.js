@@ -1,4 +1,5 @@
-function login() {
+function login(e) {
+  e.preventDefault();
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
   var data = {
@@ -26,7 +27,8 @@ function login() {
   };
 }
 
-function signin() {
+function signin(e) {
+  e.preventDefault();
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
   var data = {

@@ -3,10 +3,7 @@ const app = express();
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 app.use(express.json());
-mongoose.connect("mongodb://localhost/student_teacher", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect("mongodb://localhost/student_teacher");
 mongoose.connection
   .once("open", function () {
     console.log("connected to mongodb");
@@ -69,6 +66,8 @@ app.post("/users/signIn", async (req, res) => {
   const user = users.find((user) => user.name === req.body.name);
   console.log(user);
   if (user == null) {
+    // what is the request type
+    console.log(req);
     return res.status(400).send("Cannot find user");
   }
   try {
