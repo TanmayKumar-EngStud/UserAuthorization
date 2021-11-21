@@ -15,12 +15,12 @@
   <body>
     <div class="box">
       <h1>Login</h1>
-      <form method="post">
+      <form method="post" id="form">
         <label for="Name">Username</label>
         <input type="text" name="username" id="username" />
         <label for="Password">Password</label>
         <input type="password" name="password" id="password" />
-        <input type="submit">Log in</input>
+        <input type="submit" value="Log in" />
       </form>
       don't have account?
       <a href="signin.html">
@@ -28,27 +28,29 @@
       </a>
     </div>
     <script>
-      var form = document.forms[0];
-      form.addEventListener('submit',function(e){
+      const http = new XMLHttpRequest();
+      var form = document.getElementById("form");
+      form.addEventListener("submit", function (e) {
         e.preventDefault();
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-        
-        fetch("http://jsonplaceholder.typicode.com/posts",{
-          method:"POST",
-          body:JSON.stringify({
-            username:username,
-            password:password
-          }),
-          headers:{
-            "Content-Type":"application/json: charset:UTF-8"
-          }
-        }).then(function(response){
-          return response.json();
-        }).then(function(data){
-          console.log(data);
+        const data = JSON.stringify({
+          username: form.username.value,
+          password: form.password.value,
         });
-      })
+        console.log(data);
+        const req = http.request(
+          { hostname: "reqres.in", path: "/users/login" },
+          () => {
+            console.log(req.status);
+            if (req.status === 200) {
+              console.log(req.responseText);
+              const response = JSON.parse(req.responseText);
+              console.log(response);
+              localStorage.setItem("token", response.token);
+              window.location.href = "index.html";
+            }
+          }
+        );
+      });
     </script>
   </body>
 </html>
