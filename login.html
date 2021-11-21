@@ -37,19 +37,24 @@
           password: form.password.value,
         });
         console.log(data);
-        const req = http.request(
-          { hostname: "reqres.in", path: "/users/login" },
-          () => {
-            console.log(req.status);
-            if (req.status === 200) {
-              console.log(req.responseText);
-              const response = JSON.parse(req.responseText);
-              console.log(response);
-              localStorage.setItem("token", response.token);
+        const req = http.open(
+          "POST",
+          "http://localhost:3000/users/login",
+          true
+        );
+        http.setRequestHeader("Content-Type", "application/json");
+        http.send(data);
+        http.onreadystatechange = function () {
+          if (http.readyState == 4 && http.status == 200) {
+            console.log(http.responseText);
+            const response = JSON.parse(http.responseText);
+            if (response.status == "success") {
               window.location.href = "index.html";
+            } else {
+              alert("Invalid username or password");
             }
           }
-        );
+        };
       });
     </script>
   </body>

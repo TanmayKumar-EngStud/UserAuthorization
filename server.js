@@ -1,9 +1,19 @@
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
-
+const mongoose = require("mongoose");
+const cors = require("cors");
 app.use(express.json());
 
+mongoose.connect("mongodb://localhost/login", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
+mongoose.connection.once("open", () => {
+  console.log("connected to mongoDB");
+});
+const userSchema = require("./modelTable");
 const users = [];
 
 app.get("/users", (req, res) => {
